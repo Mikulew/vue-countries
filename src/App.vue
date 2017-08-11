@@ -1,7 +1,7 @@
 <template>
   <main id="app" >
     <app-header></app-header>
-    <router-view v-bind:countries="countries" class="container"></router-view>
+    <router-view class="container"></router-view>
     <app-footer></app-footer>
   </main>
 </template>
@@ -20,18 +20,7 @@ export default {
   },
   data() {
     return {
-      countries: {}
     }
-  },
-  methods: {
-    fetchCountries() {
-      this.$http.get('https://restcountries.eu/rest/v2/all')
-        .then(response => response.json())
-        .then(result => this.countries = result)
-    }
-  },
-  created: function() {
-    this.fetchCountries();
   }
 }
 </script>

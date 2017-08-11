@@ -14,7 +14,7 @@ export default new Router({
       component: Countries
     },
     {
-      path: '/country/:id',
+      path: '/country/:name',
       name: 'ShowCountry',
       component: ShowCountry
     }

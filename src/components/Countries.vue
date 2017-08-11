@@ -3,39 +3,39 @@
     <div class="settings">
       <div class="settings-checkbox">
         <label for="Asia">Asia</label>
-        <input id="Asia" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Asia')" v-model="isCheckedAsia" id="Asia" type="checkbox" name="" value="" checked>
         <label for="Europe">Europe</label>
-        <input id="Europe" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Europe')" v-model="isCheckedEurope" id="Europe" type="checkbox" name="" value="" checked>
         <label for="Oceania">Oceania</label>
-        <input id="Oceania" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Oceania')" v-model="isCheckedOceania" id="Oceania" type="checkbox" name="" value="" checked>
         <label for="Americas">Americas</label>
-        <input id="Americas" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Americas')" v-model="isCheckedAmericas" id="Americas" type="checkbox" name="" value="" checked>
         <label for="Africas">Africas</label>
-        <input id="Africas" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Africa')" v-model="isCheckedAfrica" id="Africas" type="checkbox" name="" value="" checked>
         <label for="Polar">Polar</label>
-        <input id="Polar" type="checkbox" name="" value="">
+        <input v-on:click="checkContinent('Polar')" v-model="isCheckedPolar" id="Polar" type="checkbox" name="" value="" checked>
       </div>
     </div>
-    <table id="countriesTable" class="table table-striped settings-table">
+    <table class="table table-striped settings-table">
       <thead>
         <tr>
-          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 100px;">ID</th>
-          <th v-on:click="sortTable" class="theadTable text-center">Name</th>
-          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 100px;">Kod</th>
-          <th v-on:click="sortTable" class="theadTable text-center">Capital</th>
-          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 120px;">Region</th>
-          <th class="theadTableNot text-center">Info</th>
+          <th class="text-center">ID</th>
+          <th class="text-center">Name</th>
+          <th class="text-center">Kod</th>
+          <th class="text-center">Capital</th>
+          <th class="text-center">Region</th>
+          <th class="text-center">Info</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="tbodyTable" v-for="(country, index) in countries">
-            <td class="text-center" v-index>{{index + 1}}</td>
+        <tr v-for="(country, index) in countries">
+            <td class="text-center">{{index + 1}}</td>
             <td class="text-center">{{country.name}}</td>
             <td class="text-center">{{country.alpha2Code}}</td>
             <td class="text-center">{{country.capital}}</td>
             <td class="text-center">{{country.region}}</td>
             <td class="text-center">
-              <router-link v-bind:to="'country/' + index">
+              <router-link v-bind:to="'country/' + country.name">
                 <button class="btn btn-info" type="button" name="button">More</button>
               </router-link>
             </td>
@@ -48,53 +48,92 @@
 <script>
 
 export default {
-  props: ['countries'],
   data () {
     return {
-
+        countries: [],
+        countriesCopy: [],
+        isCheckedAsia: true,
+        isCheckedEurope: true,
+        isCheckedOceania: true,
+        isCheckedAmericas: true,
+        isCheckedAfrica: true,
+        isCheckedPolar: true
     }
   },
   methods: {
-    sortTable: function(ev) {
-      let table = document.getElementById("countriesTable"),
-          ths = table.querySelectorAll("th.theadTable"),
-          thsArr = Array.prototype.slice.call(ths),
-          trs = table.querySelectorAll("tr.tbodyTable"),
-          trsArr = Array.prototype.slice.call(trs),
-          target = ev.target,
-          index = thsArr.indexOf(target),
-          df = document.createDocumentFragment(),
-          order = (target.classList.contains("theadTable") && target.classList.contains("text-center") && target.classList.contains("desc"))  ? "asc" : "desc";
+      fetchCountries() {
+          this.$http.get('https://restcountries.eu/rest/v2/all')
+              .then(response => response.json())
+              .then(result => {
+                this.countries = result;
+                this.countriesCopy = result;
+              })
 
 
-          clearClassName(ths);
-
-      trsArr.sort(function(a, b) {
-        let tdA = a.children[index].textContent,
-            tdB = b.children[index].textContent;
-
-        if(tdA > tdB) {
-          return order === "asc" ? -1 : 1;
-        } else if (tdA < tdB) {
-          return order === "asc" ? 1 : -1;
-        } else {
-          return 0;
+      },
+      checkContinent(continent) {
+        let countriesActually = [];
+        if (this.isCheckedAsia == true) {
+          // console.log("checkedAsia");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Asia";
+          }));
         }
-      });
-
-      function clearClassName(nodeList) {
-        for(let i = 0; i < nodeList.length; i++) {
-          nodeList[i].className = "theadTable text-center";
+        if (this.isCheckedEurope == true) {
+          // console.log("checkedEurope");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Europe";
+          }));
         }
+        if (this.isCheckedOceania == true) {
+          // console.log("checkedOceania");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Oceania";
+          }));
+        }
+        if (this.isCheckedAmericas == true) {
+          // console.log("checkedAmericas");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Americas";
+          }));
+        }
+        if (this.isCheckedAfrica == true) {
+          // console.log("checkedAfricas");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Africa";
+          }));
+        }
+        if (this.isCheckedPolar == true) {
+          // console.log("checkedPolar");
+          countriesActually.push(this.countriesCopy.filter((item) => {
+            return item.region == "Polar";
+          }));
+        }
+        if (this.isCheckedAsia == false) {
+          console.log("uncheckedAsia");
+        }
+        if (this.isCheckedEurope == false) {
+          console.log("uncheckedEurope");
+        }
+        if (this.isCheckedOceania == false) {
+          console.log("uncheckedOceania");
+        }
+        if (this.isCheckedAmericas == false) {
+          console.log("uncheckedAmericas");
+        }
+        if (this.isCheckedAfrica == false) {
+          console.log("uncheckedAfricas");
+        }
+        if (this.isCheckedPolar == false) {
+          console.log("uncheckedPolar");
+        }
+        let mergedArr = Array.prototype.concat.apply([], countriesActually);
+        console.log(countriesActually);
+        return this.countries = mergedArr;
       }
-
-      trsArr.forEach(function(tr) {
-        df.appendChild(tr);
-      });
-
-      target.className = "theadTable text-center " + order;
-      table.querySelector("tbody").appendChild(df);
-    }
+  },
+  created: function() {
+      this.fetchCountries();
   }
 }
 </script>
@@ -105,41 +144,5 @@ export default {
   }
   .settings-table {
     margin-top: 50px;
-  }
-  .theadTable, .theadTableNot {
-      padding: 20px;
-      border-right: 1px #595959 solid;
-      background-color: #2C2C2C;
-
-      position: relative;
-
-      cursor: pointer;
-
-      color: #E2E2E2;
-  }
-
-  .theadTable:after {
-      content: "";
-      display: none;
-      width: 0;
-      height: 0;
-      margin-top: -5px;
-
-      position: absolute;
-      top: 50%;
-      right: 20px;
-  }
-  .theadTable.asc:after {
-      display: block;
-      border-style: solid;
-      border-width: 0 5px 10px 5px;
-      border-color: transparent transparent #E2E2E2 transparent;
-  }
-
-  .theadTable.desc:after {
-      display: block;
-      border-style: solid;
-      border-width: 10px 5px 0 5px;
-      border-color: #E2E2E2 transparent transparent transparent;
   }
 </style>
