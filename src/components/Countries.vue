@@ -16,20 +16,20 @@
         <input id="Polar" type="checkbox" name="" value="">
       </div>
     </div>
-    <table class="table table-striped settings-table">
+    <table id="countriesTable" class="table table-striped settings-table">
       <thead>
         <tr>
-          <th class="text-center">ID</th>
-          <th class="text-center">Name</th>
-          <th class="text-center">Kod</th>
-          <th class="text-center">Capital</th>
-          <th class="text-center">Region</th>
-          <th class="text-center">Info</th>
+          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 100px;">ID</th>
+          <th v-on:click="sortTable" class="theadTable text-center">Name</th>
+          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 100px;">Kod</th>
+          <th v-on:click="sortTable" class="theadTable text-center">Capital</th>
+          <th v-on:click="sortTable" class="theadTable text-center" style="min-width: 120px;">Region</th>
+          <th class="theadTableNot text-center">Info</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(country, index) in countries">
-            <td class="text-center">{{index + 1}}</td>
+        <tr class="tbodyTable" v-for="(country, index) in countries">
+            <td class="text-center" v-index>{{index + 1}}</td>
             <td class="text-center">{{country.name}}</td>
             <td class="text-center">{{country.alpha2Code}}</td>
             <td class="text-center">{{country.capital}}</td>
@@ -55,6 +55,46 @@ export default {
     }
   },
   methods: {
+    sortTable: function(ev) {
+      let table = document.getElementById("countriesTable"),
+          ths = table.querySelectorAll("th.theadTable"),
+          thsArr = Array.prototype.slice.call(ths),
+          trs = table.querySelectorAll("tr.tbodyTable"),
+          trsArr = Array.prototype.slice.call(trs),
+          target = ev.target,
+          index = thsArr.indexOf(target),
+          df = document.createDocumentFragment(),
+          order = (target.classList.contains("theadTable") && target.classList.contains("text-center") && target.classList.contains("desc"))  ? "asc" : "desc";
+
+
+          clearClassName(ths);
+
+      trsArr.sort(function(a, b) {
+        let tdA = a.children[index].textContent,
+            tdB = b.children[index].textContent;
+
+        if(tdA > tdB) {
+          return order === "asc" ? -1 : 1;
+        } else if (tdA < tdB) {
+          return order === "asc" ? 1 : -1;
+        } else {
+          return 0;
+        }
+      });
+
+      function clearClassName(nodeList) {
+        for(let i = 0; i < nodeList.length; i++) {
+          nodeList[i].className = "theadTable text-center";
+        }
+      }
+
+      trsArr.forEach(function(tr) {
+        df.appendChild(tr);
+      });
+
+      target.className = "theadTable text-center " + order;
+      table.querySelector("tbody").appendChild(df);
+    }
   }
 }
 </script>
@@ -65,5 +105,41 @@ export default {
   }
   .settings-table {
     margin-top: 50px;
+  }
+  .theadTable, .theadTableNot {
+      padding: 20px;
+      border-right: 1px #595959 solid;
+      background-color: #2C2C2C;
+
+      position: relative;
+
+      cursor: pointer;
+
+      color: #E2E2E2;
+  }
+
+  .theadTable:after {
+      content: "";
+      display: none;
+      width: 0;
+      height: 0;
+      margin-top: -5px;
+
+      position: absolute;
+      top: 50%;
+      right: 20px;
+  }
+  .theadTable.asc:after {
+      display: block;
+      border-style: solid;
+      border-width: 0 5px 10px 5px;
+      border-color: transparent transparent #E2E2E2 transparent;
+  }
+
+  .theadTable.desc:after {
+      display: block;
+      border-style: solid;
+      border-width: 10px 5px 0 5px;
+      border-color: #E2E2E2 transparent transparent transparent;
   }
 </style>
