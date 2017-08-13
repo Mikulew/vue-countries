@@ -21,6 +21,7 @@
     <table class="table table-striped settings-table">
       <thead>
         <tr>
+          <th class="text-center">Index</th>
           <th class="text-center" v-for="column in columns">
             <a href="#" v-on:click="sortBy(column)">{{column | capitalize}}</a>
           </th>
@@ -35,7 +36,7 @@
             <td class="text-center">{{country.capital}}</td>
             <td class="text-center">{{country.region}}</td>
             <td class="text-center">
-              <router-link v-bind:to="'country/' + country.name">
+              <router-link v-bind:to="'country/' + country.name.toLowerCase()">
                 <button class="btn btn-info" type="button" name="button">More</button>
               </router-link>
             </td>
@@ -61,7 +62,7 @@ export default {
         isCheckedAll: true,
         sortKey: 'index',
         reverse: false,
-        columns: ['index', 'name', 'alpha2Code', 'capital', 'region']
+        columns: ['name', 'alpha2Code', 'capital', 'region']
     }
   },
   methods: {
@@ -75,34 +76,28 @@ export default {
       },
       sortBy(sortKey) {
         this.sortKey = sortKey;
-        // console.log(sortKey);
         this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-        if (sortKey == "index") {
-          if (!this.reverse) {
-            for (let i = 0; i < this.countries.length; i++) {
-              // console.log(i);
+        let n = this.countriesCopy.length;
+        let a = [];
+        function sortedByProperty(prop) {
+            return function (a,b) {
+              if (a[prop] > b[prop]) {
+                return 1;
+              } else if (a[prop] < b[prop]) {
+                return -1;
+              }
+              return 0;
             }
-          } else {
-            let i = this.countries.length;
-            while(i--) {
-              // console.log(i);
-            }
-          }
-        } else {
-          for (let i = 0; i < this.countries.length; i++) {
-            // this.countries = this.countries[i][sortKey];
-          }
         }
+        let sorted = this.countriesCopy.sort(sortedByProperty(sortKey));
+        if (this.reverse == false) {
 
-        // this.countries.sort(function(a, b) {
-        //   if (a > b) {
-        //     return -1;
-        //   } else if (b > a) {
-        //     return 1;
-        //   } else {
-        //     return 0;
-        //   }
-        // });
+          return a = this.countries = sorted;
+        } else if (this.reverse == true) {
+          return a = this.countries = sorted.reverse();
+        } else {
+          return false;
+        }
       },
       checkContinent(continent) {
         let countriesActually = [];
@@ -169,9 +164,13 @@ export default {
         // console.log(countriesActually);
         return this.countries = mergedArr;
       }
+
   },
   created: function() {
       this.fetchCountries();
+  },
+  computed: {
+    //
   },
   filters: {
     capitalize(value) {
@@ -189,6 +188,40 @@ export default {
     margin-top: 50px;
   }
   a {
-    color: #2c3e50;
+    color: #E2E2E2;
+  }
+  table th, table td {
+      padding: 10px 20px;
+      text-align: left;
+  }
+  table th {
+      padding: 20px;
+      border-right: 1px #595959 solid;
+      background-color: #2C2C2C;
+      position: relative;
+      cursor: pointer;
+      color: #E2E2E2;
+  }
+  table th:after {
+      content: "";
+      display: none;
+      width: 0;
+      height: 0;
+      margin-top: -5px;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+  }
+  table th.asc:after {
+      display: block;
+      border-style: solid;
+      border-width: 0 5px 10px 5px;
+      border-color: transparent transparent #E2E2E2 transparent;
+  }
+  table th.desc:after {
+      display: block;
+      border-style: solid;
+      border-width: 10px 5px 0 5px;
+      border-color: #E2E2E2 transparent transparent transparent;
   }
 </style>
