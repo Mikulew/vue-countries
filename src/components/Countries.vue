@@ -2,28 +2,28 @@
   <div>
     <div class="settings">
       <div class="settings-checkbox">
-        <label for="Asia">Asia</label>
         <input v-on:click="checkContinent('Asia')" v-model="isCheckedAsia" id="Asia" type="checkbox" name="" value="" checked>
-        <label for="Europe">Europe</label>
+        <label for="Asia">Asia</label>
         <input v-on:click="checkContinent('Europe')" v-model="isCheckedEurope" id="Europe" type="checkbox" name="" value="" checked>
-        <label for="Oceania">Oceania</label>
+        <label for="Europe">Europe</label>
         <input v-on:click="checkContinent('Oceania')" v-model="isCheckedOceania" id="Oceania" type="checkbox" name="" value="" checked>
-        <label for="Americas">Americas</label>
+        <label for="Oceania">Oceania</label>
         <input v-on:click="checkContinent('Americas')" v-model="isCheckedAmericas" id="Americas" type="checkbox" name="" value="" checked>
-        <label for="Africas">Africas</label>
+        <label for="Americas">Americas</label>
         <input v-on:click="checkContinent('Africa')" v-model="isCheckedAfrica" id="Africas" type="checkbox" name="" value="" checked>
-        <label for="Polar">Polar</label>
+        <label for="Africas">Africas</label>
         <input v-on:click="checkContinent('Polar')" v-model="isCheckedPolar" id="Polar" type="checkbox" name="" value="" checked>
+        <label for="Polar">Polar</label>
+        <input type="checkbox" name="" v-model="isCheckedAll" id="all" disabled>
+        <label for="all">All countries</label>
       </div>
     </div>
     <table class="table table-striped settings-table">
       <thead>
         <tr>
-          <th class="text-center">ID</th>
-          <th class="text-center">Name</th>
-          <th class="text-center">Kod</th>
-          <th class="text-center">Capital</th>
-          <th class="text-center">Region</th>
+          <th class="text-center" v-for="column in columns">
+            <a href="#" v-on:click="sortBy(column)">{{column | capitalize}}</a>
+          </th>
           <th class="text-center">Info</th>
         </tr>
       </thead>
@@ -50,14 +50,18 @@
 export default {
   data () {
     return {
-        countries: [],
-        countriesCopy: [],
+        countries: {},
+        countriesCopy: {},
         isCheckedAsia: true,
         isCheckedEurope: true,
         isCheckedOceania: true,
         isCheckedAmericas: true,
         isCheckedAfrica: true,
-        isCheckedPolar: true
+        isCheckedPolar: true,
+        isCheckedAll: true,
+        sortKey: 'index',
+        reverse: false,
+        columns: ['index', 'name', 'alpha2Code', 'capital', 'region']
     }
   },
   methods: {
@@ -68,8 +72,37 @@ export default {
                 this.countries = result;
                 this.countriesCopy = result;
               })
+      },
+      sortBy(sortKey) {
+        this.sortKey = sortKey;
+        // console.log(sortKey);
+        this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
+        if (sortKey == "index") {
+          if (!this.reverse) {
+            for (let i = 0; i < this.countries.length; i++) {
+              // console.log(i);
+            }
+          } else {
+            let i = this.countries.length;
+            while(i--) {
+              // console.log(i);
+            }
+          }
+        } else {
+          for (let i = 0; i < this.countries.length; i++) {
+            // this.countries = this.countries[i][sortKey];
+          }
+        }
 
-
+        // this.countries.sort(function(a, b) {
+        //   if (a > b) {
+        //     return -1;
+        //   } else if (b > a) {
+        //     return 1;
+        //   } else {
+        //     return 0;
+        //   }
+        // });
       },
       checkContinent(continent) {
         let countriesActually = [];
@@ -110,30 +143,40 @@ export default {
           }));
         }
         if (this.isCheckedAsia == false) {
-          console.log("uncheckedAsia");
+          // console.log("uncheckedAsia");
         }
         if (this.isCheckedEurope == false) {
-          console.log("uncheckedEurope");
+          // console.log("uncheckedEurope");
         }
         if (this.isCheckedOceania == false) {
-          console.log("uncheckedOceania");
+          // console.log("uncheckedOceania");
         }
         if (this.isCheckedAmericas == false) {
-          console.log("uncheckedAmericas");
+          // console.log("uncheckedAmericas");
         }
         if (this.isCheckedAfrica == false) {
-          console.log("uncheckedAfricas");
+          // console.log("uncheckedAfricas");
         }
         if (this.isCheckedPolar == false) {
-          console.log("uncheckedPolar");
+          // console.log("uncheckedPolar");
+        }
+        if (this.isCheckedAsia == true && this.isCheckedEurope == true && this.isCheckedOceania == true && this.isCheckedAmericas == true && this.isCheckedAfrica == true && this.isCheckedPolar == true) {
+          this.isCheckedAll = true;
+        } else {
+          this.isCheckedAll = false;
         }
         let mergedArr = Array.prototype.concat.apply([], countriesActually);
-        console.log(countriesActually);
+        // console.log(countriesActually);
         return this.countries = mergedArr;
       }
   },
   created: function() {
       this.fetchCountries();
+  },
+  filters: {
+    capitalize(value) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
   }
 }
 </script>
@@ -144,5 +187,8 @@ export default {
   }
   .settings-table {
     margin-top: 50px;
+  }
+  a {
+    color: #2c3e50;
   }
 </style>
