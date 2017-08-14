@@ -77,10 +77,10 @@ export default {
       sortBy(sortKey) {
         this.sortKey = sortKey;
         this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-        let n = this.countriesCopy.length;
+        let n = this.countries.length;
         let a = [];
         function sortedByProperty(prop) {
-            return function (a,b) {
+            return function (a, b) {
               if (a[prop] > b[prop]) {
                 return 1;
               } else if (a[prop] < b[prop]) {
@@ -89,7 +89,7 @@ export default {
               return 0;
             }
         }
-        let sorted = this.countriesCopy.sort(sortedByProperty(sortKey));
+        let sorted = this.countries.sort(sortedByProperty(sortKey));
         if (this.reverse == false) {
 
           return a = this.countries = sorted;
