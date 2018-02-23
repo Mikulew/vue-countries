@@ -66,12 +66,11 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
+    export default {
+        data() {
+            return {}
+        }
     }
-  }
-}
 </script>
 
 <style scoped>
@@ -84,6 +83,7 @@ export default {
     width: 100%;
     min-height: 100px;
   }
+
   .footer-wrapper {
     color: #dddddd;
     display: flex;
@@ -95,21 +95,25 @@ export default {
     height: 100%;
     margin: 10px 0;
   }
+
   .footer-paragraph {
     display: flex;
     align-content: center;
     align-items: center;
     margin: 10px 0;
   }
+
   .footer-paragraph > svg {
     margin: 0 10px 0 0;
   }
+
   .footer-link {
     color: #dddddd;
     margin-left: 10px;
     transition: all 0.2s ease-in-out;
     text-decoration: underline;
   }
+
   .footer-link:hover {
     color: #ffffff;
   }
