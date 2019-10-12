@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Countries from '@/components//countries/Countries.vue'
-import ShowCountry from '@/components/countries/ShowCountry.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Countries from '@/components//countries/Countries.vue';
+import ShowCountry from '@/components/countries/ShowCountry.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -11,12 +11,12 @@ export default new Router({
     {
       path: '/',
       name: 'Countries',
-      component: Countries
+      component: Countries,
     },
     {
       path: '/country/:name',
       name: 'ShowCountry',
-      component: ShowCountry
-    }
-  ]
-})
+      component: ShowCountry,
+    },
+  ],
+});
