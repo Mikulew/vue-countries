@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Countries from '@/components/Countries.vue'
-import ShowCountry from '@/components/ShowCountry.vue'
+import Countries from '@/components//countries/Countries.vue'
+import ShowCountry from '@/components/countries/ShowCountry.vue'
 
 Vue.use(Router)
 

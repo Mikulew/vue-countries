@@ -8,8 +8,8 @@
 
 <script>
     import Header from './components/Header.vue';
-    import Countries from './components/Countries.vue'
-    import ShowCountry from './components/ShowCountry.vue'
+    import Countries from './components/countries/Countries.vue'
+    import ShowCountry from './components/countries/ShowCountry.vue'
     import Footer from './components/Footer.vue';
 
     export default {
