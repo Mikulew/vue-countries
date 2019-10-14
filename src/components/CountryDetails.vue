@@ -55,12 +55,7 @@
           </table>
         </div>
         <div class="col-md-4">
-          <h3>Flag</h3>
-          <img
-            class="country-flag"
-            v-bind:src="country.flag"
-            v-bind:alt="country.name.toLowerCase() + ' flag'"
-          />
+          <CountryFlag :country="country" />
           <table class="table table-condensed">
             <thead>
               <tr>
@@ -97,6 +92,8 @@
 </template>
 
 <script>
+import CountryFlag from './common/CountryFlag.vue';
+
 export default {
   data() {
     return {
@@ -113,6 +110,9 @@ export default {
   },
   created() {
     this.fetchCountry(this.$route.params.name);
+  },
+  components: {
+    CountryFlag,
   },
 };
 </script>
