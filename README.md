@@ -40,7 +40,7 @@ npm install
 npm run build
 ```
 
-### Demount setup
+### Demounting setup
 
 ```bash
 # remove the "dist" directory
