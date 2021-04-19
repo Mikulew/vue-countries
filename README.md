@@ -7,7 +7,15 @@
 
 ## General info
 
-> A Vue.js Countries project
+There are **195 countries** in the world today. This total comprises 193 countries that are member states of the United Nations and 2 countries that are non-member observer states: the **Holy See** and the   **State of Palestine**.
+
+### Not in the list
+Not included in this total count of 195 countries are:
+
+- **Taiwan**, the United Nations considers it represented by the People's Republic of China
+- **The Cook Islands and Niue**, both states in free association with New Zealand which are members of several UN specialized agencies and have been recognized "full treaty-making capacity", but are neither member states nor non-member observer states.
+- **Dependencies** (or dependent territories, dependent areas, dependencies) and Areas of Special Sovereignty (autonomous territories)
+- **Other countries** recognized by the United Nations as not being self-governing
 
 ## Technologies
 
