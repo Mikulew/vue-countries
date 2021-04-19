@@ -3,6 +3,7 @@
 - [General info](#general-info)
 - [Technologies](#technologies)
 - [Setup](#setup)
+- [API](#api)
 
 ## General info
 
@@ -46,3 +47,7 @@ npm run build
 # remove the "dist" directory
 npm run clean
 ```
+
+## API
+
+https://restcountries.eu/
